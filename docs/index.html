@@ -33,12 +33,12 @@
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-    <!-- Fallback to local dist if UMD is not available -->
-    <script src="dist/index.umd.js"></script>
+    <!-- Use relative path to the UMD build -->
+    <script src="../dist/index.umd.js"></script>
 
     <script type="text/babel">
     // Ensure TokenizedText is available
-    const TokenizedTextComponent = window.TokenizedText || window.ReactTokenizedText;
+    const TokenizedTextComponent = window.TokenizedText;
 
     function App() {
         const [sequentialStep, setSequentialStep] = React.useState(1);
