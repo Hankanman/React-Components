@@ -1,0 +1,30 @@
+{
+  "name": "react-tokenized-text",
+  "version": "1.0.0",
+  "description": "A React component for llm-style text animation",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "test": "jest",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "rollup": "^4.25.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.6.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "author": "Seb Burrell",
+  "license": "MIT",
+  "type": "module"
+}

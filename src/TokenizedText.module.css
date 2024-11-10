@@ -1,0 +1,78 @@
+.container {
+  position: relative;
+}
+
+.measure {
+  visibility: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -10;
+}
+
+.hidden {
+  visibility: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -10;
+  width: 100%;
+  white-space: pre-wrap;
+}
+
+.content {
+  overflow: hidden;
+  transition: height 300ms ease-in-out;
+  white-space: pre-wrap;
+}
+
+.textContainer {
+  position: relative;
+  display: inline;
+}
+
+.token {
+  display: inline;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.word {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.space {
+  white-space: normal;
+  word-break: break-spaces;
+}
+
+.cursor {
+  display: inline-block;
+  margin-left: 2px;
+  vertical-align: middle;
+  background-color: currentColor;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
