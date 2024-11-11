@@ -1,10 +1,10 @@
-# react-tokenized-text
+# TokenizedText React Component
 
 A React component that simulates a text animation with a blinking cursor and smooth text reveal.
 
 ## Live Demo
 
-Check out the interactive demo at: [https://react-tokenized-text.js.org](https://react-tokenized-text.js.org)
+Check out the interactive demo at: [https://thepowerpilot.com/blog/projects/react-components](https://thepowerpilot.com/blog/projects/react-components)
 
 ## Features
 
@@ -19,11 +19,7 @@ Check out the interactive demo at: [https://react-tokenized-text.js.org](https:/
 
 ## Installation
 
-```bash
-npm install react-tokenized-text
-# or
-yarn add react-tokenized-text
-```
+Copy the code from [src/TokenizedText.tsx](/src/TokenizedText.tsx) into your project, you can use the css from [src/TokenizedText.module.css](/src/TokenizedText.module.css) as well. though you may have to adapt it to your project's styling engine (tailwind etc.)
 
 ## Usage
 
@@ -44,14 +40,14 @@ function MyComponent() {
 
 ## Props
 
-| Prop               | Type       | Default    | Description                              |
-| ------------------ | ---------- | ---------- | ---------------------------------------- |
-| text               | string     | (required) | The text to be animated                  |
-| typingSpeed        | number     | 100        | Time in milliseconds between each token  |
-| delay              | number     | 0          | Initial delay before text starts         |
-| initialCursorDelay | number     | 1000       | Time to show cursor before text starts   |
-| className          | string     | ''         | Additional CSS classes                   |
-| onComplete         | () => void | undefined  | Callback fired when text reveal completes|
+| Prop               | Type       | Default    | Description                               |
+| ------------------ | ---------- | ---------- | ----------------------------------------- |
+| text               | string     | (required) | The text to be animated                   |
+| typingSpeed        | number     | 100        | Time in milliseconds between each token   |
+| delay              | number     | 0          | Initial delay before text starts          |
+| initialCursorDelay | number     | 1000       | Time to show cursor before text starts    |
+| className          | string     | ''         | Additional CSS classes                    |
+| onComplete         | () => void | undefined  | Callback fired when text reveal completes |
 
 ## Examples
 
