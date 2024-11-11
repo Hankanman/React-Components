@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
-import styles from "./TokenizedText.module.css";
+"use client";
+
+import { useEffect, useState, useRef } from "react";
 
 interface TokenizedTextProps {
   text: string;
@@ -16,7 +17,7 @@ interface Token {
   isSpace: boolean;
 }
 
-export const TokenizedText: React.FC<TokenizedTextProps> = ({
+const TokenizedText: React.FC<TokenizedTextProps> = ({
   text,
   typingSpeed = 100,
   delay = 0,
@@ -32,12 +33,11 @@ export const TokenizedText: React.FC<TokenizedTextProps> = ({
     width: 0,
     height: 0,
   });
-  const hiddenTextRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const hiddenTextRef = useRef<HTMLSpanElement>(null);
+  const containerRef = useRef<HTMLSpanElement>(null);
   const visibleTextRef = useRef<HTMLSpanElement>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
 
-  // Set up resize observer to handle font loading and dynamic changes
   useEffect(() => {
     const updateCursorSize = () => {
       if (measureRef.current) {
@@ -52,6 +52,8 @@ export const TokenizedText: React.FC<TokenizedTextProps> = ({
       }
     };
 
+    updateCursorSize();
+
     const resizeObserver = new ResizeObserver(updateCursorSize);
     if (measureRef.current) {
       resizeObserver.observe(measureRef.current);
@@ -60,15 +62,14 @@ export const TokenizedText: React.FC<TokenizedTextProps> = ({
     return () => resizeObserver.disconnect();
   }, []);
 
-  // Set up resize observer for the container to handle width changes
   useEffect(() => {
     const updateHeight = () => {
       if (visibleTextRef.current) {
         const newHeight = visibleTextRef.current.offsetHeight;
-        setHeight(newHeight);
+        setHeight(newHeight + 5);
       } else if (hiddenTextRef.current) {
         const newHeight = hiddenTextRef.current.offsetHeight;
-        setHeight(newHeight);
+        setHeight(newHeight + 5);
       }
     };
 
@@ -100,7 +101,6 @@ export const TokenizedText: React.FC<TokenizedTextProps> = ({
   }, [text, tokens]);
 
   useEffect(() => {
-    // Reset states
     setTokens([]);
     setIsTyping(true);
     setShowCursor(false);
@@ -125,15 +125,13 @@ export const TokenizedText: React.FC<TokenizedTextProps> = ({
     }, []);
 
     let currentIndex = 0;
-    let interval: ReturnType<typeof setInterval> | null = null;
-    let initialDelay: ReturnType<typeof setTimeout> | null = null;
-    let startDelay: ReturnType<typeof setTimeout> | null = null;
+    let interval: NodeJS.Timeout | null = null;
+    let initialDelay: NodeJS.Timeout | null = null;
+    let startDelay: NodeJS.Timeout | null = null;
 
-    // Show cursor immediately after the initial delay
     initialDelay = setTimeout(() => {
       setShowCursor(true);
 
-      // Then wait for cursor delay before starting text
       startDelay = setTimeout(() => {
         interval = setInterval(() => {
           if (currentIndex < processedTokens.length) {
@@ -159,18 +157,26 @@ export const TokenizedText: React.FC<TokenizedTextProps> = ({
   }, [text, typingSpeed, delay, initialCursorDelay, onComplete]);
 
   return (
-    <div className={styles.container} ref={containerRef}>
-      {/* Hidden element to measure text metrics */}
-      <span ref={measureRef} aria-hidden="true" className={styles.measure}>
+    <span
+      className="relative inline-block w-full"
+      ref={containerRef}
+      key={text}
+    >
+      <span
+        ref={measureRef}
+        aria-hidden="true"
+        className={`invisible fixed left-0 top-0 -z-10 ${className}`}
+      >
         M
       </span>
 
-      {/* Hidden element to measure initial height */}
-      <div
+      <span
         ref={hiddenTextRef}
         aria-hidden="true"
-        className={`${styles.hidden} ${className}`}
+        className={`invisible fixed left-0 top-0 -z-10 w-full ${className}`}
         style={{
+          whiteSpace: "pre-wrap",
+          position: "fixed",
           fontSize: "inherit",
           lineHeight: "inherit",
           fontFamily: "inherit",
@@ -180,37 +186,49 @@ export const TokenizedText: React.FC<TokenizedTextProps> = ({
         }}
       >
         {text}
-      </div>
+      </span>
 
-      {/* Actual content container with smooth height transition */}
-      <div
-        className={`${styles.content} ${className}`}
+      <span
+        className={`inline-block overflow-hidden transition-height duration-300 ease-in-out ${className}`}
         style={{
           height: `${height}px`,
+          whiteSpace: "pre-wrap",
+          width: "100%",
         }}
       >
-        <span className={styles.textContainer} ref={visibleTextRef}>
+        <span className="relative inline" ref={visibleTextRef}>
           {tokens.map((token) => (
             <span
               key={token.id}
-              className={`${styles.token} ${
-                token.isSpace ? styles.space : styles.word
+              className={`${
+                token.isSpace
+                  ? "break-spaces whitespace-normal"
+                  : "break-word whitespace-normal"
               }`}
+              style={{
+                animation: "fadeIn 0.3s ease-in-out forwards",
+                opacity: 0,
+                display: "inline",
+              }}
             >
               {token.text}
             </span>
           ))}
           {isTyping && showCursor && (
             <span
-              className={styles.cursor}
+              className="ml-0.5 inline-block align-middle"
               style={{
+                backgroundColor: "currentColor",
                 width: `${cursorDimensions.width}px`,
                 height: `${cursorDimensions.height}px`,
+                animation: "blink 1s step-end infinite",
               }}
             />
           )}
         </span>
-      </div>
-    </div>
+      </span>
+    </span>
   );
 };
+
+export default TokenizedText;
